@@ -1,0 +1,121 @@
+from pathlib import Path
+from PIL import Image
+import base64, mimetypes, html
+
+base = Path("/mnt/data")
+school = base / "30612.jpg"
+head = base / "30611.jpg"
+out = base / "al_iqra_cadet_madrasah.html"
+
+# Embed the supplied photos in the HTML so they remain available when the HTML file is moved.
+def data_uri(path):
+    mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
+    return f"data:{mime};base64," + base64.b64encode(path.read_bytes()).decode("ascii")
+
+school_uri = data_uri(school)
+head_uri = data_uri(head)
+
+page = r'''<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আল ইকরা ক্যাডেট মাদ্রাসা</title>
+<style>
+:root{--green:#087443;--deep:#075b36;--pale:#eaf7ef;--gold:#f2c94c;--ink:#173b2a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;color:#183528;background:#f7fbf8;line-height:1.65}
+header{background:linear-gradient(120deg,var(--deep),#0b8b50);color:#fff;padding:15px 5%;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid white;background:white}
+.brand h1{font-size:clamp(21px,4vw,32px);margin:0}.brand p{margin:0;color:#e1f6e8}
+nav{background:#fff;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:12px;box-shadow:0 2px 8px #0001;position:sticky;top:0;z-index:5}
+nav a{color:var(--deep);font-weight:bold;text-decoration:none}
+.hero{background:linear-gradient(#043d29a8,#043d29a8),url('''' + school_uri + r'''') center/cover;color:white;text-align:center;padding:70px 18px}
+.hero h2{font-size:clamp(28px,5vw,44px);margin:0 0 8px}.hero p{font-size:18px;margin:0 auto 20px;max-width:720px}
+.btn{display:inline-block;border:0;border-radius:8px;background:var(--gold);color:#173b2a;padding:11px 18px;font-weight:bold;text-decoration:none;cursor:pointer}
+main{max-width:1100px;margin:auto;padding:24px 16px}section{margin:28px 0}.section-title{text-align:center;color:var(--deep);font-size:27px;margin-bottom:18px}
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}.school-photo{width:100%;height:300px;object-fit:cover;border-radius:15px;box-shadow:0 5px 18px #0002}
+.card{background:white;padding:20px;border-radius:14px;box-shadow:0 4px 16px #075b3612;border:1px solid #e4f0e7}
+.headmaster{display:flex;gap:22px;align-items:center;max-width:760px;margin:auto}.headmaster img{width:180px;height:210px;object-fit:cover;border-radius:12px}
+.classes{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.class-card{text-align:center;background:white;border-top:4px solid var(--green);padding:18px 8px;border-radius:10px;box-shadow:0 3px 12px #0000000a}
+.notice{background:var(--pale);border-left:5px solid var(--green);padding:20px;border-radius:10px;text-align:center}
+form{max-width:650px;margin:auto;display:grid;gap:12px}label{font-weight:bold}input,select,textarea{width:100%;padding:11px;border:1px solid #b7d3c1;border-radius:7px;font:inherit;background:#fff}
+.contact{text-align:center;background:var(--pale);padding:22px;border-radius:12px}
+footer{text-align:center;background:#073e28;color:white;padding:18px;margin-top:30px}
+.small{font-size:13px;color:#597064}
+@media(max-width:700px){.about{grid-template-columns:1fr}.classes{grid-template-columns:repeat(2,1fr)}.headmaster{flex-direction:column;text-align:center}.headmaster img{width:170px;height:190px}.hero{padding:52px 16px}nav{gap:12px}}
+</style>
+</head>
+<body>
+<header>
+<img class="logo" src="''' + school_uri + r'''" alt="আল ইকরা মাদ্রাসার ছবি">
+<div class="brand"><h1>আল ইকরা ক্যাডেট মাদ্রাসা</h1><p>আদর্শ শিক্ষা • নৈতিকতা • সুন্দর ভবিষ্যৎ</p></div>
+</header>
+<nav>
+<a href="#home">হোম</a><a href="#about">আমাদের সম্পর্কে</a><a href="#headmaster">প্রধান শিক্ষক</a><a href="#classes">শ্রেণিসমূহ</a><a href="#admission">ভর্তি</a><a href="#contact">যোগাযোগ</a>
+</nav>
+<div class="hero" id="home">
+<h2>আল ইকরা ক্যাডেট মাদ্রাসায় স্বাগতম</h2>
+<p>শিক্ষা, শৃঙ্খলা ও নৈতিক মূল্যবোধের সমন্বয়ে আপনার সন্তানের সুন্দর ভবিষ্যৎ গড়ার প্রত্যয়।</p>
+<a class="btn" href="#admission">ভর্তি সম্পর্কে জানুন</a>
+</div>
+<main>
+<section id="about">
+<h2 class="section-title">আমাদের সম্পর্কে</h2>
+<div class="about">
+<div class="card"><h3>আমাদের লক্ষ্য</h3><p>শিক্ষার্থীদের মানসম্মত শিক্ষা, ভালো আচরণ, শৃঙ্খলা ও নৈতিক মূল্যবোধে গড়ে তোলা।</p><p>আমরা প্রতিটি শিক্ষার্থীর শেখার আগ্রহ ও সৃজনশীলতা বিকাশে গুরুত্ব দিই।</p><p><b>ঠিকানা:</b> গোবিন্দগঞ্জ, গাইবান্ধা, বাংলাদেশ</p></div>
+<img class="school-photo" src="''' + school_uri + r'''" alt="আল ইকরা ক্যাডেট মাদ্রাসার ভবন">
+</div>
+</section>
+<section id="headmaster">
+<h2 class="section-title">প্রধান শিক্ষক</h2>
+<div class="card headmaster">
+<img src="''' + head_uri + r'''" alt="প্রধান শিক্ষক আব্দুল জলিল পাঠান">
+<div><h3>জনাব আব্দুল জলিল পাঠান</h3><p><b>পদবি:</b> প্রধান শিক্ষক</p><p>শিক্ষার্থীদের মানসম্মত শিক্ষা ও নৈতিক বিকাশে আন্তরিকভাবে কাজ করে যাচ্ছেন।</p><p><b>যোগাযোগ:</b> <a href="tel:01750324040">01750324040</a></p></div>
+</div>
+</section>
+<section id="classes">
+<h2 class="section-title">আমাদের শ্রেণিসমূহ</h2>
+<div class="classes">
+<div class="class-card"><h3>প্রথম শ্রেণি</h3><p>Class One</p></div><div class="class-card"><h3>দ্বিতীয় শ্রেণি</h3><p>Class Two</p></div><div class="class-card"><h3>তৃতীয় শ্রেণি</h3><p>Class Three</p></div><div class="class-card"><h3>চতুর্থ শ্রেণি</h3><p>Class Four</p></div><div class="class-card"><h3>পঞ্চম শ্রেণি</h3><p>Class Five</p></div>
+</div>
+<p class="small" style="text-align:center">শ্রেণি ও বিভাগসংক্রান্ত বিস্তারিত তথ্য মাদ্রাসা কর্তৃপক্ষের সঙ্গে যোগাযোগ করে জেনে নিন।</p>
+</section>
+<section id="admission">
+<h2 class="section-title">ভর্তি চলছে</h2>
+<div class="notice"><h3>আপনার সন্তানকে আজই ভর্তি করানোর তথ্য নিন</h3><p>ভর্তি, প্রয়োজনীয় কাগজপত্র ও ফি সম্পর্কে জানতে সরাসরি যোগাযোগ করুন।</p><a class="btn" href="tel:01750324040">এখনই ফোন করুন</a></div>
+<div class="card" style="margin-top:18px">
+<h3 style="text-align:center">ভর্তি-তথ্য ফর্ম (ডেমো)</h3>
+<form id="admissionForm">
+<div><label for="student">শিক্ষার্থীর নাম</label><input id="student" required placeholder="শিক্ষার্থীর পূর্ণ নাম"></div>
+<div><label for="guardian">অভিভাবকের নাম</label><input id="guardian" required placeholder="অভিভাবকের পূর্ণ নাম"></div>
+<div><label for="class">যে শ্রেণিতে ভর্তি হতে চান</label><select id="class" required><option value="">শ্রেণি নির্বাচন করুন</option><option>প্রথম শ্রেণি</option><option>দ্বিতীয় শ্রেণি</option><option>তৃতীয় শ্রেণি</option><option>চতুর্থ শ্রেণি</option><option>পঞ্চম শ্রেণি</option></select></div>
+<div><label for="mobile">মোবাইল নম্বর</label><input id="mobile" type="tel" required placeholder="অভিভাবকের মোবাইল নম্বর"></div>
+<button class="btn" type="submit">তথ্য প্রস্তুত করুন</button>
+<p class="small">এটি শুধু নমুনা ফর্ম। তথ্য অনলাইনে জমা হয় না। ফর্ম পূরণের পর মাদ্রাসায় ফোন করে তথ্য দিন।</p>
+</form>
+</div>
+</section>
+<section id="contact">
+<h2 class="section-title">যোগাযোগ</h2>
+<div class="contact"><h3>আল ইকরা ক্যাডেট মাদ্রাসা</h3><p>গোবিন্দগঞ্জ, গাইবান্ধা, বাংলাদেশ</p><p>মোবাইল: <a href="tel:01750324040"><b>01750324040</b></a></p><a class="btn" href="https://wa.me/8801750324040">WhatsApp-এ যোগাযোগ</a></div>
+</section>
+</main>
+<footer>© <span id="year"></span> আল ইকরা ক্যাডেট মাদ্রাসা | সর্বস্বত্ব সংরক্ষিত</footer>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("admissionForm").addEventListener("submit", function(e){
+ e.preventDefault();
+ const student = document.getElementById("student").value.trim();
+ const guardian = document.getElementById("guardian").value.trim();
+ const cls = document.getElementById("class").value;
+ const mobile = document.getElementById("mobile").value.trim();
+ const msg = "ভর্তি-তথ্য (নিজে ফোন করে জানান):\\nশিক্ষার্থীর নাম: "+student+"\\nঅভিভাবক: "+guardian+"\\nশ্রেণি: "+cls+"\\nমোবাইল: "+mobile;
+ const w = window.open("","_blank");
+ if(w){w.document.write("<meta charset='utf-8'><title>ভর্তি-তথ্য</title><pre style='font:18px Arial;white-space:pre-wrap'>"+msg.replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</pre><p>এই তথ্য স্বয়ংক্রিয়ভাবে মাদ্রাসায় জমা হয়নি। ফোন করে জানান।</p>");}
+ else {alert("ফর্মটি অনলাইনে জমা হয়নি। অনুগ্রহ করে 01750324040 নম্বরে ফোন করুন।");}
+});
+</script>
+</body>
+</html>'''
+out.write_text(page, encoding="utf-8")
+print(f"Website created: {out}")
